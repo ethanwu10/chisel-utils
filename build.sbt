@@ -1,7 +1,7 @@
 ThisBuild / scalaVersion := "2.13.10"
 
 ThisBuild / version := "0.1.0"
-ThisBuild / organization := "io.ocf"
+ThisBuild / organization := "dev.ethanwu.chisel"
 
 val chiselVersion = "3.5.6"
 
