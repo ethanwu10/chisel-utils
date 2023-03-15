@@ -8,7 +8,8 @@ class SyncSRLatchIO extends Bundle {
   val out = Decoupled(Bool())
 }
 
-class SyncSRLatch(init: Bool = false.B, resetFirst: Boolean = false) extends Module {
+class SyncSRLatch(init: Bool = false.B, resetFirst: Boolean = false)
+    extends Module {
   val io = IO(new SyncSRLatchIO())
 
   private val latch = SRLatch(init = init, resetFirst = resetFirst)
@@ -23,7 +24,10 @@ class SyncSRLatch(init: Bool = false.B, resetFirst: Boolean = false) extends Mod
 }
 
 object SyncSRLatch {
-  def apply(init: Bool = false.B, resetFirst: Boolean = false): SyncSRLatchIO = {
+  def apply(
+      init: Bool = false.B,
+      resetFirst: Boolean = false
+  ): SyncSRLatchIO = {
     val latch = Module(new SyncSRLatch(init = init, resetFirst = resetFirst))
 
     latch.io.set.noenq()
