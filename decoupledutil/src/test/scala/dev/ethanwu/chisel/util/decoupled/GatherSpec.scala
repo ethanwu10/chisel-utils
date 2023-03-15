@@ -4,7 +4,7 @@ import chisel3._
 import chisel3.experimental.BundleLiterals._
 import chisel3.util._
 import chiseltest._
-import nerv32.TestUtils._
+import dev.ethanwu.chisel.util.test._
 import dev.ethanwu.chisel.util.decoupled.MakeBundle._
 import org.scalatest.funspec.AnyFunSpec
 

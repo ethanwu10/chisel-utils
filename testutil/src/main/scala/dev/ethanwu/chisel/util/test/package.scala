@@ -1,10 +1,10 @@
-package nerv32
+package dev.ethanwu.chisel.util
 
 import chisel3._
 import chisel3.util._
 import chiseltest._
 
-object TestUtils {
+package object test {
   def monitor(runnable: => Unit) =
     fork.withRegion(Monitor)(runnable)
 

@@ -33,9 +33,9 @@ object ValidExt {
       * new typed [[Valid]] interface.
       *
       * @param f
-      * The function to apply to this [[Valid]]'s 'bits' with return type B
+      *   The function to apply to this [[Valid]]'s 'bits' with return type B
       * @return
-      * a new [[Valid]] of type B
+      *   a new [[Valid]] of type B
       */
     def map[B <: Data](f: T => B): Valid[B] = {
       val _map_bits = f(target.bits)

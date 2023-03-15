@@ -3,7 +3,7 @@ package dev.ethanwu.chisel.util.decoupled
 import chisel3._
 import chisel3.util.Decoupled
 import chiseltest._
-import nerv32.TestUtils._
+import dev.ethanwu.chisel.util.test._
 import dev.ethanwu.chisel.util.decoupled.MakeBundle.BundleExt
 import org.scalatest.funspec.AnyFunSpec
 

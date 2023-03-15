@@ -3,7 +3,7 @@ package dev.ethanwu.chisel.util.decoupled
 import chisel3._
 import chisel3.util.{Decoupled, DecoupledIO}
 import chiseltest._
-import nerv32.TestUtils.monitor
+import dev.ethanwu.chisel.util.test.monitor
 import org.scalatest.funspec.AnyFunSpec
 
 class SplitterSpec extends AnyFunSpec with ChiselScalatestTester {
