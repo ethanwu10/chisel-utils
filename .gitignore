@@ -24,3 +24,6 @@ project/plugins/project/
 .idea/*
 !/.idea/codeStyles/
 .vscode/
+
+### Chisel
+test_run_dir/

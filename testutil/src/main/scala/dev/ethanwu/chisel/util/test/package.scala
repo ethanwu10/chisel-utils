@@ -8,9 +8,51 @@ package object test {
   def monitor(runnable: => Unit) =
     fork.withRegion(Monitor)(runnable)
 
+  private class DecoupledDriverHelper[T <: Data](x: ReadyValidIO[T])
+      extends DecoupledDriver(x) {
+    // Make public
+    override def getSourceClock: Clock = super.getSourceClock
+    override def getSinkClock: Clock = super.getSinkClock
+  }
+
+  implicit class DecoupledDriverExt[T <: Data](x: ReadyValidIO[T]) {
+    // Copied from [[chiseltest.DecoupledDriver]]
+
+    private def getSinkClock: Clock = new DecoupledDriverHelper(x).getSinkClock
+
+    def dequeue(): T = {
+      var value: Option[T] = None
+      // TODO: check for init
+      x.ready.poke(true.B)
+      fork
+        .withRegion(Monitor) {
+          x.waitForValid()
+          x.valid.expect(true.B)
+          value = Some(x.bits.peek())
+        }
+        .joinAndStep(getSinkClock)
+      value.get
+    }
+
+    def dequeueNow(): T = {
+      var value: Option[T] = None
+      timescope {
+        // TODO: check for init
+        x.ready.poke(true.B)
+        fork
+          .withRegion(Monitor) {
+            x.valid.expect(true.B)
+            value = Some(x.bits.peek())
+          }
+          .joinAndStep(getSinkClock)
+      }
+      value.get
+    }
+  }
+
   implicit class DecoupledRecordDriver[T <: Record](x: ReadyValidIO[T])
       extends DecoupledDriver(x) {
-    // Copied from chiseltest DecoupledDriver
+    // Copied from [[chiseltest.DecoupledDriver]]
 
     def expectPartialDequeue(data: T): T = {
       var value: Option[T] = None
@@ -19,12 +61,12 @@ package object test {
         x.ready.poke(true.B)
         fork
           .withRegion(Monitor) {
-            x.waitForValid()
+            waitForValid()
             x.valid.expect(true.B)
             x.bits.expectPartial(data)
             value = Some(x.bits.peek())
           }
-          .joinAndStep(x.getSinkClock)
+          .joinAndStep(getSinkClock)
       }
       value.get
     }
@@ -40,7 +82,7 @@ package object test {
             x.bits.expectPartial(data)
             value = Some(x.bits.peek())
           }
-          .joinAndStep(x.getSinkClock)
+          .joinAndStep(getSinkClock)
       }
       value.get
     }
